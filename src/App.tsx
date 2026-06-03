@@ -1,8 +1,10 @@
+import { Button } from "#components/ui/button";
+
 function App() {
     return (
-        <div className="flex items-center justify-center h-screen text-2xl font-bold"> 
+        <Button variant="outline" size="lg">
             Hello World
-        </div>
+        </Button>
     );
 }
 
