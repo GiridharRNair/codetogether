@@ -9,7 +9,7 @@ import {
 import { Input } from "#components/ui/input";
 import { useNavigate } from "react-router";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
-import landingPageVisual from "./assets/landing-page-visual.svg";
+import landingPageVisual from "#assets/landing-page-visual.svg";
 
 function App() {
     const navigate = useNavigate();
