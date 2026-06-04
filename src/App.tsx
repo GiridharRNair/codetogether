@@ -8,32 +8,27 @@ import {
 } from "#components/ui/field";
 import { Input } from "#components/ui/input";
 import { useNavigate } from "react-router";
+import { v4 as uuidv4, validate as uuidValidate } from "uuid";
 import landingPageVisual from "./assets/landing-page-visual.svg";
-
-const generateRoomId = () => Math.random().toString(36).slice(2, 8);
 
 function App() {
     const navigate = useNavigate();
     const [roomCode, setRoomCode] = useState("");
 
     const handleCreateRoom = () => {
-        const roomId = generateRoomId();
+        const roomId = uuidv4();
         navigate(`/room/${roomId}`);
     };
 
     const handleJoinRoom = () => {
-        if (roomCode.trim()) {
+        if (roomCode.trim() && uuidValidate(roomCode.trim())) {
             navigate(`/room/${roomCode.trim()}`);
         }
     };
 
     return (
         <div className="flex flex-col h-screen items-center justify-center w-full">
-            <img
-                src={landingPageVisual}
-                alt="CodeTogether"
-                className="w-120"
-            />
+            <img src={landingPageVisual} alt="CodeTogether" className="w-120" />
             <form className="w-90">
                 <FieldGroup>
                     <FieldSet>
