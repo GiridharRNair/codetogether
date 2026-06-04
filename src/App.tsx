@@ -10,6 +10,7 @@ import { Input } from "#components/ui/input";
 import { useNavigate } from "react-router";
 import { v4 as uuidv4, validate as uuidValidate } from "uuid";
 import landingPageVisual from "#assets/landing-page-visual.svg";
+import { toast } from "sonner";
 
 function App() {
     const navigate = useNavigate();
@@ -23,6 +24,8 @@ function App() {
     const handleJoinRoom = () => {
         if (roomCode.trim() && uuidValidate(roomCode.trim())) {
             navigate(`/room/${roomCode.trim()}`);
+        } else {
+            toast.error("Please enter a valid room code");
         }
     };
 
