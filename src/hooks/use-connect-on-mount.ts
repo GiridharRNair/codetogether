@@ -1,7 +1,7 @@
 import { SupabaseProvider } from "@supabase-labs/y-supabase";
 import type { SupabasePersistenceOptions } from "@supabase-labs/y-supabase";
 import type { editor as MonacoEditor } from "monaco-editor";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { MonacoBinding } from "y-monaco";
 import { Awareness } from "y-protocols/awareness";
 import * as Y from "yjs";
@@ -13,6 +13,11 @@ type UseConnectOnMountOptions = {
     channel: string;
     persistence?: boolean | SupabasePersistenceOptions;
     awareness?: boolean | Awareness;
+};
+
+export type ConnectedUser = {
+    clientId: number;
+    color?: string;
 };
 
 const generateRandomColor = () =>
@@ -29,6 +34,9 @@ export function useConnectOnMount({
     const userRef = useRef<{ color: string } | null>(null);
     const styleRef = useRef<HTMLStyleElement | null>(null);
     const awarenessHandlerRef = useRef<(() => void) | null>(null);
+    const usersHandlerRef = useRef<(() => void) | null>(null);
+    const providerAwarenessRef = useRef<Awareness | null>(null);
+    const [users, setUsers] = useState<ConnectedUser[]>([]);
 
     const connectOnMount = useCallback(
         (editor: MonacoEditor.IStandaloneCodeEditor) => {
@@ -50,8 +58,23 @@ export function useConnectOnMount({
                 },
             );
             const providerAwareness = provider.getAwareness();
+            providerAwarenessRef.current = providerAwareness;
 
             if (providerAwareness) {
+                const updateUsers = () => {
+                    const connectedUsers = Array.from(
+                        providerAwareness.getStates().entries(),
+                    ).map(([clientId, state]) => ({
+                        clientId,
+                        color: state?.user?.color,
+                    }));
+
+                    setUsers(connectedUsers);
+                };
+                providerAwareness.on("change", updateUsers);
+                updateUsers();
+                usersHandlerRef.current = updateUsers;
+
                 if (!userRef.current) {
                     userRef.current = {
                         color: generateRandomColor(),
@@ -83,13 +106,13 @@ export function useConnectOnMount({
 
                     providerAwareness.getStates().forEach((state, clientId) => {
                         const color = state?.user?.color;
+                        if (!color) return;
                         const isValidHsl =
                             /^hsl\(\d{1,3},\s*\d{1,3}%,\s*\d{1,3}%\)$/.test(
                                 color,
                             );
 
                         if (!isValidHsl) return;
-                        if (!color) return;
 
                         css += `
               .yRemoteSelection-${clientId}, .yRemoteSelectionHead-${clientId} {
@@ -115,7 +138,7 @@ export function useConnectOnMount({
                 providerAwareness,
             );
         },
-        [channel], // eslint-disable-line
+        [channel, awareness, persistence],
     );
 
     useEffect(() => {
@@ -123,6 +146,12 @@ export function useConnectOnMount({
             if (awarenessHandlerRef.current && providerRef.current) {
                 const awareness = providerRef.current.getAwareness();
                 awareness?.off("update", awarenessHandlerRef.current);
+            }
+            if (usersHandlerRef.current && providerAwarenessRef.current) {
+                providerAwarenessRef.current.off(
+                    "change",
+                    usersHandlerRef.current,
+                );
             }
             styleRef.current?.remove();
             bindingRef.current?.destroy();
@@ -134,5 +163,8 @@ export function useConnectOnMount({
         };
     }, []);
 
-    return { connectOnMount };
+    return {
+        connectOnMount,
+        users,
+    };
 }
