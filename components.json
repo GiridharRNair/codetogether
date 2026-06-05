@@ -12,15 +12,17 @@
     },
     "iconLibrary": "lucide",
     "rtl": false,
+    "menuColor": "default-translucent",
+    "menuAccent": "subtle",
     "aliases": {
         "components": "#components",
+        "utils": "#lib/utils",
         "ui": "#components/ui",
         "lib": "#lib",
         "hooks": "#hooks",
-        "utils": "#lib/utils",
         "assets": "#assets/*"
     },
-    "menuColor": "default-translucent",
-    "menuAccent": "subtle",
-    "registries": {}
+    "registries": {
+        "@supabase": "https://supabase.com/ui/r/{name}.json"
+    }
 }
