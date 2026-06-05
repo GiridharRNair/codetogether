@@ -1,11 +1,12 @@
-import { useParams } from "react-router";
+import { useParams, Navigate } from "react-router";
+import { validate as uuidValidate } from "uuid";
 import { RealtimeMonaco } from "#components/realtime-monaco";
 
 function Room() {
     const { roomId } = useParams();
 
-    if (!roomId) {
-        return null;
+    if (!roomId || !uuidValidate(roomId)) {
+        return <Navigate to="/" replace />;
     }
 
     return (
