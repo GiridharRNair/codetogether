@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "#components/ui/button";
 import {
     Field,
+    FieldDescription,
     FieldGroup,
     FieldSeparator,
     FieldSet,
@@ -60,17 +61,30 @@ function App() {
                         </FieldGroup>
                     </FieldSet>
 
-                    <FieldSeparator> or continue with </FieldSeparator>
+                    <FieldSeparator> or </FieldSeparator>
 
                     <FieldSet>
                         <FieldGroup>
-                            <Button
-                                type="button"
-                                onClick={handleCreateRoom}
-                                className="w-full"
-                            >
-                                Create Room
-                            </Button>
+                            <Field>
+                                <Button
+                                    type="button"
+                                    onClick={handleCreateRoom}
+                                    className="w-full"
+                                >
+                                    Create Room
+                                </Button>
+                                <FieldDescription className="text-center">
+                                    No login. Free.{" "}
+                                    <a
+                                        href="https://github.com/GiridharRNair/codetogether"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Opensource
+                                    </a>
+                                    .
+                                </FieldDescription>
+                            </Field>
                         </FieldGroup>
                     </FieldSet>
                 </FieldGroup>
