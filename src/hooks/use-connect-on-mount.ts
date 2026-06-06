@@ -41,7 +41,18 @@ export function useConnectOnMount({
     const awarenessHandlerRef = useRef<(() => void) | null>(null);
     const usersHandlerRef = useRef<(() => void) | null>(null);
     const providerAwarenessRef = useRef<Awareness | null>(null);
+    const yMetaRef = useRef<Y.Map<string> | null>(null);
+    const metaObserverRef = useRef<(() => void) | null>(null);
     const [users, setUsers] = useState<ConnectedUser[]>([]);
+    const [language, setLanguageState] = useState<string>("javascript");
+
+    const setLanguage = useCallback((lang: string) => {
+        if (yMetaRef.current) {
+            yMetaRef.current.set("language", lang);
+        } else {
+            setLanguageState(lang);
+        }
+    }, []);
 
     const connectOnMount = useCallback(
         (editor: MonacoEditor.IStandaloneCodeEditor) => {
@@ -52,6 +63,16 @@ export function useConnectOnMount({
 
             const doc = new Y.Doc();
             const yText = doc.getText("monaco");
+            const yMeta = doc.getMap<string>("metadata");
+            yMetaRef.current = yMeta;
+
+            const onMetaChange = () => {
+                const lang = yMeta.get("language");
+                if (lang) setLanguageState(lang);
+            };
+            metaObserverRef.current = onMetaChange;
+            yMeta.observe(onMetaChange);
+            onMetaChange();
             const supabase = createClient();
             const provider = new SupabaseProvider(
                 channel,
@@ -186,6 +207,10 @@ export function useConnectOnMount({
                 );
             }
             styleRef.current?.remove();
+            if (metaObserverRef.current && yMetaRef.current) {
+                yMetaRef.current.unobserve(metaObserverRef.current);
+            }
+            yMetaRef.current = null;
             bindingRef.current?.destroy();
             bindingRef.current = null;
             providerRef.current?.destroy();
@@ -198,5 +223,7 @@ export function useConnectOnMount({
     return {
         connectOnMount,
         users,
+        language,
+        setLanguage,
     };
 }

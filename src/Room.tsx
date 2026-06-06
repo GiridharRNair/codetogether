@@ -15,11 +15,21 @@ const config: Config = {
     style: "capital",
 };
 
+const SUPPORTED_LANGUAGES = [
+    { label: "Python", value: "python" },
+    { label: "Java", value: "java" },
+    { label: "C++", value: "cpp" },
+    { label: "JavaScript", value: "javascript" },
+    { label: "TypeScript", value: "typescript" },
+    { label: "Go", value: "go" },
+    { label: "Kotlin", value: "kotlin" },
+];
+
 function Room() {
     const { roomId } = useParams();
     const name = uniqueNamesGenerator(config);
 
-    const { connectOnMount, users } = useConnectOnMount({
+    const { connectOnMount, users, language, setLanguage } = useConnectOnMount({
         channel: roomId ?? "",
         name: name,
     });
@@ -32,25 +42,39 @@ function Room() {
         <div>
             <h1>Room: {roomId}</h1>
 
-            <div>
-                Users:{" "}
-                {users.map((user) => (
-                    <span
-                        key={user.clientId}
-                        style={{
-                            display: "inline-block",
-                            width: 10,
-                            height: 10,
-                            borderRadius: "50%",
-                            backgroundColor: user.color || "gray",
-                            marginRight: 5,
-                        }}
-                    />
-                ))}
+            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+                <div>
+                    Users:{" "}
+                    {users.map((user) => (
+                        <span
+                            key={user.clientId}
+                            style={{
+                                display: "inline-block",
+                                width: 10,
+                                height: 10,
+                                borderRadius: "50%",
+                                backgroundColor: user.color || "gray",
+                                marginRight: 5,
+                            }}
+                        />
+                    ))}
+                </div>
+
+                <select
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                >
+                    {SUPPORTED_LANGUAGES.map((lang) => (
+                        <option key={lang.value} value={lang.value}>
+                            {lang.label}
+                        </option>
+                    ))}
+                </select>
             </div>
 
             <RealtimeMonaco
                 connectOnMount={connectOnMount}
+                language={language}
                 height="90vh"
                 theme="dark"
             />
