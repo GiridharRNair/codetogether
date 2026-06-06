@@ -74,7 +74,7 @@ function App() {
                                     Create Room
                                 </Button>
                                 <FieldDescription className="text-center">
-                                    No login. Free.{" "}
+                                    No sign up. Free.{" "}
                                     <a
                                         href="https://github.com/GiridharRNair/codetogether"
                                         target="_blank"
