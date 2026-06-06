@@ -1,3 +1,5 @@
+// https://supabase.com/ui/docs/react/realtime-monaco
+
 import { SupabaseProvider } from "@supabase-labs/y-supabase";
 import type { SupabasePersistenceOptions } from "@supabase-labs/y-supabase";
 import type { editor as MonacoEditor } from "monaco-editor";
@@ -10,12 +12,14 @@ import { createClient } from "#lib/supabase/client";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
 type UseConnectOnMountOptions = {
+    name: string;
     channel: string;
     persistence?: boolean | SupabasePersistenceOptions;
     awareness?: boolean | Awareness;
 };
 
 export type ConnectedUser = {
+    name: string;
     clientId: number;
     color?: string;
 };
@@ -24,6 +28,7 @@ const generateRandomColor = () =>
     `hsl(${Math.floor(Math.random() * 360)}, 80%, 60%)`;
 
 export function useConnectOnMount({
+    name,
     channel,
     persistence,
     awareness = true,
@@ -31,7 +36,7 @@ export function useConnectOnMount({
     const docRef = useRef<Y.Doc | null>(null);
     const providerRef = useRef<SupabaseProvider | null>(null);
     const bindingRef = useRef<MonacoBinding | null>(null);
-    const userRef = useRef<{ color: string } | null>(null);
+    const userRef = useRef<{ color: string; name: string } | null>(null);
     const styleRef = useRef<HTMLStyleElement | null>(null);
     const awarenessHandlerRef = useRef<(() => void) | null>(null);
     const usersHandlerRef = useRef<(() => void) | null>(null);
@@ -67,6 +72,7 @@ export function useConnectOnMount({
                     ).map(([clientId, state]) => ({
                         clientId,
                         color: state?.user?.color,
+                        name: state?.user?.name,
                     }));
 
                     setUsers(connectedUsers);
@@ -78,6 +84,7 @@ export function useConnectOnMount({
                 if (!userRef.current) {
                     userRef.current = {
                         color: generateRandomColor(),
+                        name: name,
                     };
                 }
                 providerAwareness.setLocalStateField("user", userRef.current);
@@ -101,11 +108,33 @@ export function useConnectOnMount({
               border-left: 2px solid var(--y-remote-selection-color, rgba(0, 0, 0, 0.7));
               margin-left: -1px;
               box-sizing: border-box;
+              position: relative;
+            }
+            .yRemoteSelectionHead::after {
+              position: absolute;
+              top: -1.4em;
+              left: -2px;
+              background-color: var(--y-remote-selection-color, rgba(0, 0, 0, 0.7));
+              color: white;
+              padding: 2px 6px;
+              border-radius: 3px 3px 3px 0;
+              font-size: 12px;
+              font-family: sans-serif;
+              white-space: nowrap;
+              pointer-events: none;
+              line-height: 1.2;
+              font-weight: 500;
+              opacity: 0;
+              transition: opacity 0.15s ease;
+            }
+            .yRemoteSelectionHead:hover::after {
+              opacity: 1;
             }
           `;
 
                     providerAwareness.getStates().forEach((state, clientId) => {
                         const color = state?.user?.color;
+                        const userName = state?.user?.name;
                         if (!color) return;
                         const isValidHsl =
                             /^hsl\(\d{1,3},\s*\d{1,3}%,\s*\d{1,3}%\)$/.test(
@@ -118,6 +147,9 @@ export function useConnectOnMount({
               .yRemoteSelection-${clientId}, .yRemoteSelectionHead-${clientId} {
                 --y-remote-selection-color: ${color};
               }
+              .yRemoteSelectionHead-${clientId}::after {
+                content: "${userName}";
+              }
             `;
                     });
 
@@ -126,7 +158,7 @@ export function useConnectOnMount({
 
                 awarenessHandlerRef.current = applyAwarenessStyles;
                 applyAwarenessStyles();
-                providerAwareness.on("update", applyAwarenessStyles);
+                providerAwareness.on("change", applyAwarenessStyles);
             }
 
             docRef.current = doc;
@@ -138,14 +170,14 @@ export function useConnectOnMount({
                 providerAwareness,
             );
         },
-        [channel, awareness, persistence],
+        [channel, awareness, persistence, name],
     );
 
     useEffect(() => {
         return () => {
             if (awarenessHandlerRef.current && providerRef.current) {
                 const awareness = providerRef.current.getAwareness();
-                awareness?.off("update", awarenessHandlerRef.current);
+                awareness?.off("change", awarenessHandlerRef.current);
             }
             if (usersHandlerRef.current && providerAwarenessRef.current) {
                 providerAwarenessRef.current.off(
