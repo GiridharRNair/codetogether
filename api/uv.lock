@@ -58,11 +58,13 @@ wheels = [
 ]
 
 [[package]]
-name = "codetogether"
+name = "codealong-api"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
+    { name = "httpx" },
+    { name = "python-dotenv" },
 ]
 
 [package.dev-dependencies]
@@ -71,7 +73,11 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" }]
+requires-dist = [
+    { name = "fastapi", extras = ["standard"], specifier = ">=0.136.3" },
+    { name = "httpx", specifier = ">=0.28.0" },
+    { name = "python-dotenv", specifier = ">=1.2.2" },
+]
 
 [package.metadata.requires-dev]
 dev = [{ name = "ruff", specifier = ">=0.15.16" }]
