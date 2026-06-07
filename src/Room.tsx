@@ -16,13 +16,12 @@ const config: Config = {
 };
 
 const SUPPORTED_LANGUAGES = [
-    { label: "Python", value: "python" },
+    { label: "Python3", value: "python" },
     { label: "Java", value: "java" },
     { label: "C++", value: "cpp" },
-    { label: "JavaScript", value: "javascript" },
     { label: "TypeScript", value: "typescript" },
     { label: "Go", value: "go" },
-    { label: "Kotlin", value: "kotlin" },
+    { label: "Rust", value: "rust" },
 ];
 
 function Room() {
