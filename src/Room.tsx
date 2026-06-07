@@ -42,7 +42,14 @@ function Room() {
         <div>
             <h1>Room: {roomId}</h1>
 
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 8 }}>
+            <div
+                style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 12,
+                    marginBottom: 8,
+                }}
+            >
                 <div>
                     Users:{" "}
                     {users.map((user) => (
