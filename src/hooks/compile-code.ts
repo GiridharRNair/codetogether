@@ -36,5 +36,5 @@ export async function compileCode(
     }
 
     const data: CompileResponse = await response.json();
-    return data.output;
+    return data.output || data.error || "No output";
 }
