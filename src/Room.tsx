@@ -164,19 +164,25 @@ function Room() {
                     )}
                 </Button>
 
-                {/* Right: copy invite */}
-                <Button
-                    variant="outline"
-                    onClick={handleCopyInvite}
-                    className="gap-2 sm:ml-auto w-33"
-                >
-                    {copied ? (
-                        <Check className="h-4 w-4" />
-                    ) : (
-                        <Copy className="h-4 w-4" />
-                    )}
-                    {copied ? "Copied!" : "Copy Invite"}
-                </Button>
+                {/* Right: room ID and copy invite */}
+                <div className="sm:ml-auto gap-2 flex items-center">
+                    <div className="text-xs sm:text-sm font-mono text-muted-foreground">
+                        {roomId}
+                    </div>
+
+                    <Button
+                        variant="outline"
+                        onClick={handleCopyInvite}
+                        className="gap-2 w-33"
+                    >
+                        {copied ? (
+                            <Check className="h-4 w-4" />
+                        ) : (
+                            <Copy className="h-4 w-4" />
+                        )}
+                        {copied ? "Copied!" : "Copy Invite"}
+                    </Button>
+                </div>
             </div>
 
             {/* Main content */}
