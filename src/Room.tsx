@@ -50,7 +50,7 @@ const SUPPORTED_LANGUAGES = [
 
 function Room() {
     const { roomId } = useParams();
-    const name = uniqueNamesGenerator(config);
+    const [name] = useState(() => uniqueNamesGenerator(config));
     const [stdin, setStdin] = useState("");
     const [output, setOutput] = useState("");
     const [isRunning, setIsRunning] = useState(false);
