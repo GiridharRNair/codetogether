@@ -1,4 +1,6 @@
 import js from "@eslint/js";
+import eslintJs from "@eslint/js";
+import eslintReact from "@eslint-react/eslint-plugin";
 import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
@@ -15,8 +17,12 @@ export default defineConfig([
             tseslint.configs.stylisticTypeChecked,
             reactHooks.configs.flat.recommended,
             reactRefresh.configs.vite,
+            eslintJs.configs.recommended,
+            tseslint.configs.recommended,
+            eslintReact.configs["recommended-typescript"],
         ],
         languageOptions: {
+            parser: tseslint.parser,
             globals: globals.browser,
             parserOptions: {
                 project: ["./tsconfig.node.json", "./tsconfig.app.json"],
