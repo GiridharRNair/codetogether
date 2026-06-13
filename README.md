@@ -2,7 +2,7 @@
 
 ![code along](public/readme-header.png)
 
-Simple and quick real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required.
+Simple and quick real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required. Perfect for pair programming, technical interviews, tutoring sessions, and solving coding problems together in real time.
 
 ## Architecture
 
