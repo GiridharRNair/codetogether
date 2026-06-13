@@ -19,12 +19,12 @@ function App() {
 
     const handleCreateRoom = () => {
         const roomId = uuidv4();
-        navigate(`/room/${roomId}`);
+        void navigate(`/room/${roomId}`);
     };
 
     const handleJoinRoom = () => {
         if (roomCode.trim() && uuidValidate(roomCode.trim())) {
-            navigate(`/room/${roomCode.trim()}`);
+            void navigate(`/room/${roomCode.trim()}`);
         } else {
             toast.error("Please enter a valid room code");
         }
@@ -43,7 +43,7 @@ function App() {
                                     placeholder="Enter code"
                                     value={roomCode}
                                     onChange={(e) =>
-                                        setRoomCode(e.target.value)
+                                        { setRoomCode(e.target.value); }
                                     }
                                     required
                                 />
