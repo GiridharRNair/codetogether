@@ -42,9 +42,9 @@ function App() {
                                     id="room-code-input"
                                     placeholder="Enter code"
                                     value={roomCode}
-                                    onChange={(e) =>
-                                        { setRoomCode(e.target.value); }
-                                    }
+                                    onChange={(e) => {
+                                        setRoomCode(e.target.value);
+                                    }}
                                     required
                                 />
                                 <Button
