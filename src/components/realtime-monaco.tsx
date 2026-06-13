@@ -3,21 +3,19 @@
 import { Editor } from "@monaco-editor/react";
 import type { editor } from "monaco-editor";
 
-type RealtimeMonacoProps = {
+interface RealtimeMonacoProps {
     connectOnMount: (editor: editor.IStandaloneCodeEditor) => void;
     language: string;
     height: string | number;
     className?: string;
     theme: "light" | "dark";
     onChange: (value: string) => void;
-};
-
-const DEFAULT_HEIGHT = 550;
+}
 
 const RealtimeMonaco = ({
     connectOnMount,
     language,
-    height = DEFAULT_HEIGHT,
+    height,
     theme,
     onChange,
     ...rest
@@ -28,7 +26,9 @@ const RealtimeMonaco = ({
             language={language}
             theme={theme === "dark" ? "vs-dark" : "light"}
             onMount={connectOnMount}
-            onChange={(val) => onChange?.(val ?? "")}
+            onChange={(val) => {
+                onChange(val ?? "");
+            }}
             {...rest}
         />
     );
