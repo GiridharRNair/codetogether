@@ -32,5 +32,5 @@ export async function compileCode(
         throw new Error("No output or error received from compiler");
     }
 
-    return data.output ?? data.error;
+    return data.error ?? data.output;
 }
