@@ -84,7 +84,9 @@ function Room() {
     const handleCopyInvite = async () => {
         await navigator.clipboard.writeText(window.location.href);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => {
+            setCopied(false);
+        }, 2000);
     };
 
     return (
@@ -129,7 +131,9 @@ function Room() {
 
                 <Select
                     value={language}
-                    onValueChange={(val) => val && setLanguage(val)}
+                    onValueChange={(val) => {
+                        if (val) setLanguage(val);
+                    }}
                 >
                     <SelectTrigger className="w-36 h-9">
                         <SelectValue placeholder="Language">
@@ -150,7 +154,7 @@ function Room() {
                 </Select>
 
                 <Button
-                    onClick={handleRun}
+                    onClick={() => void handleRun()}
                     disabled={isRunning}
                     className="gap-1.5"
                 >
@@ -172,7 +176,7 @@ function Room() {
 
                     <Button
                         variant="outline"
-                        onClick={handleCopyInvite}
+                        onClick={() => void handleCopyInvite()}
                         className="gap-2 w-33"
                     >
                         {copied ? (
@@ -208,7 +212,9 @@ function Room() {
                         </div>
                         <Textarea
                             value={stdin}
-                            onChange={(e) => setStdin(e.target.value)}
+                            onChange={(e) => {
+                                setStdin(e.target.value);
+                            }}
                             placeholder="stdin…"
                             className="resize-none rounded-none border-0 text-xs font-mono focus-visible:ring-0 focus-visible:ring-offset-0 min-h-24"
                         />
@@ -225,7 +231,9 @@ function Room() {
                                 <Button
                                     variant="ghost"
                                     size="sm"
-                                    onClick={() => setOutput("")}
+                                    onClick={() => {
+                                        setOutput("");
+                                    }}
                                     className="ml-auto h-3 px-2 text-xs"
                                 >
                                     Clear
