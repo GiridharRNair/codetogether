@@ -76,7 +76,7 @@ function App() {
                                 <FieldDescription className="text-center">
                                     No sign up. Free.{" "}
                                     <a
-                                        href="https://github.com/GiridharRNair/codetogether"
+                                        href="https://github.com/GiridharRNair/CodeAlong"
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
