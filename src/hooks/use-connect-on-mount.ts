@@ -9,23 +9,35 @@ import { Awareness } from "y-protocols/awareness";
 import * as Y from "yjs";
 
 import { createClient } from "#lib/supabase/client";
-import type { SupabaseClient } from "@supabase/supabase-js";
 
-type UseConnectOnMountOptions = {
+interface AwarenessUserState {
+    user?: {
+        color?: string;
+        name?: string;
+    };
+}
+
+const escapeCssString = (str: string): string =>
+    str
+        .replace(/\\/g, "\\\\")
+        .replace(/"/g, '\\"')
+        .replace(/[\r\n]/g, " ");
+
+interface UseConnectOnMountOptions {
     name: string;
     channel: string;
     persistence?: boolean | SupabasePersistenceOptions;
     awareness?: boolean | Awareness;
-};
+}
 
-export type ConnectedUser = {
+export interface ConnectedUser {
     name: string;
     clientId: number;
     color?: string;
-};
+}
 
 const generateRandomColor = () =>
-    `hsl(${Math.floor(Math.random() * 360)}, 80%, 60%)`;
+    `hsl(${String(Math.floor(Math.random() * 360))}, 80%, 60%)`;
 
 export function useConnectOnMount({
     name,
@@ -74,15 +86,10 @@ export function useConnectOnMount({
             yMeta.observe(onMetaChange);
             onMetaChange();
             const supabase = createClient();
-            const provider = new SupabaseProvider(
-                channel,
-                doc,
-                supabase as SupabaseClient,
-                {
-                    awareness,
-                    persistence,
-                },
-            );
+            const provider = new SupabaseProvider(channel, doc, supabase, {
+                awareness,
+                persistence,
+            });
             const providerAwareness = provider.getAwareness();
             providerAwarenessRef.current = providerAwareness;
 
@@ -90,11 +97,14 @@ export function useConnectOnMount({
                 const updateUsers = () => {
                     const connectedUsers = Array.from(
                         providerAwareness.getStates().entries(),
-                    ).map(([clientId, state]) => ({
-                        clientId,
-                        color: state?.user?.color,
-                        name: state?.user?.name,
-                    }));
+                    ).map(([clientId, state]) => {
+                        const userState = state as AwarenessUserState;
+                        return {
+                            clientId,
+                            color: userState.user?.color,
+                            name: userState.user?.name ?? "",
+                        };
+                    });
 
                     setUsers(connectedUsers);
                 };
@@ -102,12 +112,10 @@ export function useConnectOnMount({
                 updateUsers();
                 usersHandlerRef.current = updateUsers;
 
-                if (!userRef.current) {
-                    userRef.current = {
-                        color: generateRandomColor(),
-                        name: name,
-                    };
-                }
+                userRef.current ??= {
+                    color: generateRandomColor(),
+                    name: name,
+                };
                 providerAwareness.setLocalStateField("user", userRef.current);
 
                 const applyAwarenessStyles = () => {
@@ -154,8 +162,9 @@ export function useConnectOnMount({
           `;
 
                     providerAwareness.getStates().forEach((state, clientId) => {
-                        const color = state?.user?.color;
-                        const userName = state?.user?.name;
+                        const userState = state as AwarenessUserState;
+                        const color = userState.user?.color;
+                        const userName = userState.user?.name;
                         if (!color) return;
                         const isValidHsl =
                             /^hsl\(\d{1,3},\s*\d{1,3}%,\s*\d{1,3}%\)$/.test(
@@ -164,12 +173,14 @@ export function useConnectOnMount({
 
                         if (!isValidHsl) return;
 
+                        const id = String(clientId);
+                        const safeUserName = escapeCssString(userName ?? "");
                         css += `
-              .yRemoteSelection-${clientId}, .yRemoteSelectionHead-${clientId} {
+              .yRemoteSelection-${id}, .yRemoteSelectionHead-${id} {
                 --y-remote-selection-color: ${color};
               }
-              .yRemoteSelectionHead-${clientId}::after {
-                content: "${userName}";
+              .yRemoteSelectionHead-${id}::after {
+                content: "${safeUserName}";
               }
             `;
                     });
