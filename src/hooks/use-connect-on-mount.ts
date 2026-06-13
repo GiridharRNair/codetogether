@@ -56,7 +56,7 @@ export function useConnectOnMount({
     const yMetaRef = useRef<Y.Map<string> | null>(null);
     const metaObserverRef = useRef<(() => void) | null>(null);
     const [users, setUsers] = useState<ConnectedUser[]>([]);
-    const [language, setLanguageState] = useState<string>("python");
+    const [languageState, setLanguageState] = useState<string>("python");
 
     const setLanguage = useCallback((lang: string) => {
         if (yMetaRef.current) {
@@ -234,7 +234,7 @@ export function useConnectOnMount({
     return {
         connectOnMount,
         users,
-        language,
+        language: languageState,
         setLanguage,
     };
 }
