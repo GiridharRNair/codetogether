@@ -2,19 +2,13 @@ const API_BASE_URL = import.meta.env.DEV ? "http://localhost:8000" : "";
 
 interface CompileResponse {
     output: string;
-    error: string;
-    status: "success" | "error";
-    exit_code: number;
-    signal: number | null;
-    time: string;
-    total: string;
-    memory: string;
+    error: string | null;
 }
 
 export async function compileCode(
     code: string,
     language: string,
-    input: string = "",
+    input = "",
 ): Promise<string> {
     const response = await fetch(`${API_BASE_URL}/api/compile`, {
         method: "POST",
@@ -29,10 +23,14 @@ export async function compileCode(
     });
 
     if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.detail || "Failed to compile code");
+        const error = (await response.json()) as { detail?: string };
+        throw new Error(error.detail ?? "Failed to compile code");
     }
 
-    const data: CompileResponse = await response.json();
-    return data.output || data.error || "No output";
+    const data = (await response.json()) as CompileResponse;
+    if (!data.output && !data.error) {
+        throw new Error("No output or error received from compiler");
+    }
+
+    return data.output ?? data.error;
 }

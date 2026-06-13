@@ -32,6 +32,7 @@ import {
     Terminal,
     LoaderCircle,
 } from "lucide-react";
+import { toast } from "sonner";
 
 const config: Config = {
     dictionaries: [adjectives, animals],
@@ -70,6 +71,11 @@ function Room() {
         setIsRunning(true);
         setOutput("");
         try {
+            if (!code.trim()) {
+                toast.error("Code editor is empty");
+                return;
+            }
+
             const result = await compileCode(code, language, stdin);
             setOutput(result);
         } catch (err) {
