@@ -4,14 +4,15 @@
     "version": "0.0.0",
     "type": "module",
     "scripts": {
+        "postinstall": "cd api && uv sync",
         "dev": "vite",
         "format": "prettier --write .",
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "start-python-server": "cd api && uv run fastapi dev",
-        "lint-python-server": "cd api && uv run ruff check .",
-        "format-python-server": "cd api && uv run ruff format ."
+        "api": "cd api && uv run fastapi dev",
+        "lint-api": "cd api && uv run ruff check .",
+        "format-api": "cd api && uv run ruff format ."
     },
     "dependencies": {
         "@base-ui/react": "^1.5.0",
