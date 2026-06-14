@@ -41,7 +41,7 @@ const generateRandomColor = () =>
     `hsl(${String(Math.floor(Math.random() * 360))}, 80%, 60%)`;
 
 const SUPPORTED_LANGUAGES = [
-    { value: "python", label: "Python3" },
+    { value: "python", label: "Python" },
     { value: "java", label: "Java" },
     { value: "cpp", label: "C++" },
     { value: "typescript", label: "TypeScript" },
@@ -95,7 +95,7 @@ export function useConnectOnMount({
                     const language =
                         SUPPORTED_LANGUAGES.find((l) => l.value === lang)
                             ?.label ?? lang;
-                    toast(`Language changed to ${language}`);
+                    toast.info(`Language changed to ${language}`);
                 }
             };
             metaObserverRef.current = onMetaChange;

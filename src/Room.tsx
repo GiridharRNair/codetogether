@@ -41,11 +41,11 @@ const config: Config = {
 };
 
 const SUPPORTED_LANGUAGES = [
-    { label: "Python3", value: "python" },
-    { label: "Java", value: "java" },
-    { label: "C++", value: "cpp" },
+    { label: "Python 3.7", value: "python" },
+    { label: "Java 7", value: "java" },
+    { label: "C++ 17", value: "cpp" },
     { label: "TypeScript", value: "typescript" },
-    { label: "Go", value: "go" },
+    { label: "Go 1.26.1", value: "go" },
     { label: "Rust", value: "rust" },
 ];
 
