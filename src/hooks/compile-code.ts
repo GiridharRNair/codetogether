@@ -23,12 +23,14 @@ export async function compileCode(
     });
 
     if (!response.ok) {
+        let message = "Failed to compile code";
         try {
             const error = (await response.json()) as { detail?: string };
-            throw new Error(error.detail ?? "Failed to compile code");
+            message = error.detail ?? message;
         } catch {
             // Ignore JSON parsing errors
         }
+        throw new Error(message);
     }
 
     const data = (await response.json()) as CompileResponse;
