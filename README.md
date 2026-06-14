@@ -46,14 +46,13 @@ npm run api
 
 The API will be available at `http://localhost:8000`. Swagger docs are at `http://localhost:8000/api/docs`.
 
-
 ### Other Scripts
 
 ```bash
 npm run build          # Frontend production build
 npm run lint           # Lint TypeScript
 npm run format         # Format TypeScript
-npm run lint-api       # Lint Python 
+npm run lint-api       # Lint Python
 npm run format-api     # Format Python
 ```
 
