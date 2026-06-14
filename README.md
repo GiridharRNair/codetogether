@@ -2,7 +2,7 @@
 
 ![code along](public/readme-header.png)
 
-Simple and quick real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required. Perfect for pair programming, technical interviews, and tutoring sessions.
+Simple single file real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required. Perfect for pair programming, technical interviews, and tutoring sessions.
 
 ## Architecture
 
@@ -16,9 +16,9 @@ The frontend uses the React framework with Typescript powered by Vite. Real-time
 
 - [Node.js](https://nodejs.org/) v18+
 - [Python](https://python.org/) 3.13+
-- [uv](https://docs.astral.sh/uv/) (Python package manager)
-- [Supabase](https://supabase.com/) project (for realtime sync)
-- [JDoodle](https://www.jdoodle.com/) API credentials (for code execution)
+- [uv](https://docs.astral.sh/uv/)
+- [Supabase](https://supabase.com/) project
+- [JDoodle](https://www.jdoodle.com/) API credentials
 
 ### Environment Variables
 
@@ -60,4 +60,4 @@ npm run format-api     # Format Python
 
 MIT
 
-Open to contributions or feature suggestions by opening an issue or pull request.
+Open to contributions and feature suggestions via issues or pull requests.
