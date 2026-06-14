@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import { RealtimeMonaco } from "#components/realtime-monaco";
 import { useConnectOnMount } from "#hooks/use-connect-on-mount";
-import { compileCode } from "#hooks/compile-code";
+import { compileCode } from "#services/compile-code";
 
 import { Button } from "#components/ui/button";
 import {
