@@ -2,23 +2,23 @@
 
 ![code along](public/readme-header.png)
 
-Simple and quick real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required. Perfect for pair programming, technical interviews, tutoring sessions, and solving coding problems together in real time.
+Simple and quick real-time collaborative code editor. Create a room, share the link, and code together instantly — no sign-up required. Perfect for pair programming, technical interviews, and tutoring sessions.
 
 ## Architecture
 
 ![Architecture](public/architecture.png)
 
-The frontend is a React + TypeScript app powered by Vite. Real-time collaboration is handled by [Yjs](https://yjs.dev/) with [y-supabase](https://github.com/supabase-labs/y-supabase) as the sync provider, syncing document state through Supabase's realtime infrastructure. Code execution is proxied through a FastAPI backend that calls the [JDoodle](https://www.jdoodle.com/) compiler API. Both the frontend and backend are deployed on Vercel, with the backend running as a serverless function.
+The frontend uses the React framework with Typescript powered by Vite. Real-time collaboration is handled by [Yjs](https://yjs.dev/) with [y-supabase](https://github.com/supabase-labs/y-supabase) as the sync provider, syncing document state through Supabase's realtime infrastructure. Code execution is proxied through a FastAPI backend that calls the [JDoodle](https://www.jdoodle.com/) compiler API. Both the frontend and backend are deployed on Vercel, with the backend running as a serverless function.
 
 ## Local Development
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18+)
+- [Node.js](https://nodejs.org/) v18+
 - [Python](https://python.org/) 3.13+
 - [uv](https://docs.astral.sh/uv/) (Python package manager)
-- A [Supabase](https://supabase.com/) project (for realtime sync)
-- A [JDoodle](https://www.jdoodle.com/) API key (for code execution)
+- [Supabase](https://supabase.com/) project (for realtime sync)
+- [JDoodle](https://www.jdoodle.com/) API credentials (for code execution)
 
 ### Environment Variables
 
@@ -59,3 +59,5 @@ npm run format-api     # Format Python
 ## License
 
 MIT
+
+Open to contributions or feature suggestions by opening an issue or pull request.
