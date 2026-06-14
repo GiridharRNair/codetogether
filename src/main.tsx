@@ -5,6 +5,8 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import "./index.css";
 import App from "./App.tsx";
 import { Toaster } from "#components/ui/sonner";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("Root element not found");
@@ -16,6 +18,8 @@ createRoot(root).render(
                 <Route path="/room/:roomId" element={<Room />} />
             </Routes>
         </BrowserRouter>
+        <Analytics />
+        <SpeedInsights />
         <Toaster />
     </StrictMode>,
 );
