@@ -50,6 +50,7 @@ class RunCodeRequest(BaseModel):
 
 
 @app.get("/api/health")
+@limiter.limit("20/minute")
 def health():
     return {"status": "healthy"}
 
