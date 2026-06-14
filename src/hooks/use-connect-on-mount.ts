@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { MonacoBinding } from "y-monaco";
 import { Awareness } from "y-protocols/awareness";
 import * as Y from "yjs";
+import { toast } from "sonner";
 
 import { createClient } from "#lib/supabase/client";
 
@@ -38,6 +39,15 @@ export interface ConnectedUser {
 
 const generateRandomColor = () =>
     `hsl(${String(Math.floor(Math.random() * 360))}, 80%, 60%)`;
+
+const SUPPORTED_LANGUAGES = [
+    { value: "python", label: "Python3" },
+    { value: "java", label: "Java" },
+    { value: "cpp", label: "C++" },
+    { value: "typescript", label: "TypeScript" },
+    { value: "go", label: "Go" },
+    { value: "rust", label: "Rust" },
+];
 
 export function useConnectOnMount({
     name,
@@ -80,7 +90,13 @@ export function useConnectOnMount({
 
             const onMetaChange = () => {
                 const lang = yMeta.get("language");
-                if (lang) setLanguageState(lang);
+                if (lang) {
+                    setLanguageState(lang);
+                    const language =
+                        SUPPORTED_LANGUAGES.find((l) => l.value === lang)
+                            ?.label ?? lang;
+                    toast(`Language changed to ${language}`);
+                }
             };
             metaObserverRef.current = onMetaChange;
             yMeta.observe(onMetaChange);
