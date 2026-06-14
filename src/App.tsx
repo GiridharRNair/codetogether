@@ -32,7 +32,11 @@ function App() {
 
     return (
         <div className="flex flex-col h-screen items-center justify-center w-full">
-            <img src={landingPageVisual} alt="CodeTogether" className="w-120" />
+            <img
+                src={landingPageVisual}
+                alt="LandingPageVisual"
+                className="w-120"
+            />
             <form className="w-90">
                 <FieldGroup>
                     <FieldSet>
