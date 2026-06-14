@@ -20,6 +20,6 @@ createRoot(root).render(
         </BrowserRouter>
         <Analytics />
         <SpeedInsights />
-        <Toaster richColors={true} />
+        <Toaster />
     </StrictMode>,
 );
