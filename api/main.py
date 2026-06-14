@@ -16,9 +16,15 @@ app = FastAPI(docs_url="/api/docs", openapi_url="/api/openapi.json")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)  # type: ignore[arg-type]
 
+ORIGINS = [
+    "http://localhost:5173",
+    "https://codealong.live",
+    "https://codealong-gules.vercel.app",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=ORIGINS,
     allow_methods=["*"],
     allow_headers=["*"],
 )
