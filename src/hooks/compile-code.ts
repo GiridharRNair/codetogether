@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.DEV ? "http://localhost:8000" : "";
 
 interface CompileResponse {
     output: string;
-    error: string | null;
+    error?: string;
 }
 
 export async function compileCode(
@@ -23,8 +23,12 @@ export async function compileCode(
     });
 
     if (!response.ok) {
-        const error = (await response.json()) as { detail?: string };
-        throw new Error(error.detail ?? "Failed to compile code");
+        try {
+            const error = (await response.json()) as { detail?: string };
+            throw new Error(error.detail ?? "Failed to compile code");
+        } catch {
+            // Ignore JSON parsing errors
+        }
     }
 
     const data = (await response.json()) as CompileResponse;
